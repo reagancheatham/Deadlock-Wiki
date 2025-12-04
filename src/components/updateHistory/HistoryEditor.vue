@@ -67,7 +67,7 @@ function cancel() {
                         >
                         </v-select>
                         <v-textarea
-                            rows="12"
+                            rows="4"
                             label="Changes"
                             v-model="history.changes">
                         </v-textarea>

@@ -79,64 +79,74 @@ function cancelAbility() {
                 <v-row class="ml-4 mr-4">
                     <v-col>
                         <v-text-field
+                            density="compact"
                             label="Name"
                             v-model="character.name"
                             :rules="requiredRules"
                         ></v-text-field>
                         <v-textarea
+                            density="compact"
                             label="Background"
                             v-model="character.background"
                             rows="11"
                             no-resize
                         ></v-textarea>
                         <v-date-input
+                            density="compact"
                             label="Release Date"
                             v-model="characterInfo.releaseDate"
                             prepend-icon=""
                         >
                         </v-date-input>
                         <v-text-field
+                            density="compact"
                             label="Voice Actor"
                             v-model="characterInfo.voiceActor"
                         >
                         </v-text-field>
                         <v-text-field
+                            density="compact"
                             label="Code Names"
                             v-model="characterInfo.codeNames"
                         >
                         </v-text-field>
                     </v-col>
                     <v-col>
-                        <v-container height="78px"></v-container>
                         <v-text-field
+                            density="compact"
                             label="Health"
                             v-model="vitalityStats.health"
                         >
                         </v-text-field>
                         <v-text-field
+                            density="compact"
                             label="Health Regen"
                             v-model="vitalityStats.healthRegen"
                             suffix="hp/s"
                         >
                         </v-text-field>
                         <v-text-field
+                            density="compact"
                             label="Move Speed"
                             v-model="vitalityStats.moveSpeed"
                             suffix="m/s"
                         >
                         </v-text-field>
                         <v-text-field
+                            density="compact"
                             label="Dash Speed"
                             v-model="vitalityStats.dashSpeed"
                             suffix="s"
                         >
                         </v-text-field>
                         <v-text-field
+                            density="compact"
                             label="Stamina"
                             v-model="vitalityStats.stamina"
                         >
                         </v-text-field>
                         <v-text-field
+                            density="compact"
                             label="Stamina Cooldown"
                             v-model="vitalityStats.staminaCooldown"
                             suffix="s"
@@ -144,25 +154,25 @@ function cancelAbility() {
                         </v-text-field>
                         <v-row class="mt-1 justify-center" style="gap: 30px">
                             <v-btn
-                                size="50px"
+                                size="40px"
                                 color="button_secondary"
                                 @click="selectAbility(1)"
                                 >1</v-btn
                             >
                             <v-btn
-                                size="50px"
+                                size="40px"
                                 color="button_secondary"
                                 @click="selectAbility(2)"
                                 >2</v-btn
                             >
                             <v-btn
-                                size="50px"
+                                size="40px"
                                 color="button_secondary"
                                 @click="selectAbility(3)"
                                 >3</v-btn
                             >
                             <v-btn
-                                size="50px"
+                                size="40px"
                                 color="button_secondary"
                                 @click="selectAbility(4)"
                                 >4</v-btn
@@ -171,7 +181,7 @@ function cancelAbility() {
                         <v-row class="mt-4 justify-center"
                             ><v-label text="Abilities"></v-label
                         ></v-row>
-                        <v-row class="mt-8 mb-3 mr-1" justify="end">
+                        <v-row class="mt-12 mb-3 mr-12" justify="end">
                             <v-btn
                                 class="mr-4"
                                 color="button_primary"
