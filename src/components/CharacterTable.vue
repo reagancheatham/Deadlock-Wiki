@@ -1,8 +1,9 @@
 <script setup>
 import { ref } from "vue";
-import characterServices from "@/services/characterServices";
+import characterServices from "@/services/character.services";
 import CharacterEditor from "./CharacterEditor.vue";
-import characterInfoServices from "@/services/characterInfoServices.js";
+import characterInfoServices from "@/services/characterInfo.services.js";
+import vitalityStatsServices from "@/services/vitalityStats.services.js";
 
 const headers = [
     {
@@ -42,7 +43,7 @@ async function remove(character) {
     });
 }
 
-async function save(characterData, characterInfo) {
+async function save(characterData, characterInfo, vitalityStats) {
     isInputDisabled.value = true;
 
     await characterServices.update(characterData).then(() => {
@@ -50,10 +51,13 @@ async function save(characterData, characterInfo) {
         characters.value[index] = characterData;
     });
 
-    await characterInfoServices.update(characterInfo).then(() => {
-        isInputDisabled.value = false;
-        closeDialog();
-    });
+    await characterInfoServices.update(characterInfo);
+
+    vitalityStats.characterID = characterData.id;
+    await vitalityStatsServices.update(vitalityStats);
+
+    isInputDisabled.value = false;
+    closeDialog();
 }
 
 function closeDialog() {

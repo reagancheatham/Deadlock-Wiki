@@ -18,7 +18,7 @@ import CharacterTable from "./components/CharacterTable.vue";
             <Toolbar />
             <Navbar />
             <v-main>
-                <CharacterTable />
+                <RouterView />
             </v-main>
         </v-layout>
     </v-sheet>

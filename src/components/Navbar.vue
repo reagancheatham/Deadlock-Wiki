@@ -1,20 +1,29 @@
+<script setup>
+import router from "@/routing/router.js";
+import routes from "@/routing/Routes.js";
+
+function navigate(name) {
+    router.push(name);
+}
+</script>
+
 <template>
     <v-navigation-drawer expand-on-hover permanent rail>
         <v-list>
             <v-list-item
                 prepend-icon="mdi-account"
                 title="Characters"
-                value="characters"
+                @click="navigate(routes.Characters)"
             ></v-list-item>
             <v-list-item
                 prepend-icon="mdi-sword"
                 title="Weapons"
-                value="weapons"
+                @click="navigate(routes.Weapons)"
             ></v-list-item>
             <v-list-item
                 prepend-icon="mdi-clipboard-text-clock-outline"
                 title="Update History"
-                value="updateHistory"
+                @click="navigate(routes.UpdateHistory)"
             ></v-list-item>
         </v-list>
     </v-navigation-drawer>
