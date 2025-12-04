@@ -15,6 +15,15 @@ const customTheme = {
     },
 };
 
+const lightTheme = {
+    dark: false,
+    colors: {
+        button_primary: colors.deepOrange.darken4,
+        button_secondary: colors.grey.darken1,
+        button_tertiary: colors.deepOrange.darken2,
+    },
+}
+
 export default createVuetify({
     components,
     directives,
@@ -28,6 +37,7 @@ export default createVuetify({
         defaultTheme: "customTheme",
         themes: {
             customTheme,
+            lightTheme
         },
     },
 });
