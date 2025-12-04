@@ -1,8 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { VDateInput } from "vuetify/lib/labs/components.js";
-import characterInfoServices from "@/services/characterInfo.services.js";
-import vitalityStatsServices from "@/services/vitalityStats.services.js";
+import characterServices from "@/services/character.services.js";
 import abilityServices from "@/services/ability.services.js";
 import AbilityEditor from "../abilities/AbilityEditor.vue";
 
@@ -24,12 +23,9 @@ const requiredRules = [
     },
 ];
 
-characterInfoServices.find(props.character.id).then((info) => {
-    characterInfo.value = info;
-});
-
-vitalityStatsServices.find(props.character.id).then((stats) => {
-    vitalityStats.value = stats;
+characterServices.getGameplayData(props.character.id).then((response) => {
+    characterInfo.value = response.CharacterInfo;
+    vitalityStats.value = response.VitalityStat;
 });
 
 abilityServices

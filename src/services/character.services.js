@@ -40,7 +40,7 @@ export default {
             .catch((err) => {
                 console.error(`Error updating character: ${err}`);
             });
-        
+
         return databaseCharacter;
     },
     async delete(id) {
@@ -66,5 +66,19 @@ export default {
             });
 
         return characters;
+    },
+    async getGameplayData(id) {
+        let data = null;
+
+        await apiClient
+            .get(`${API_ROOT}/gameplay/${id}`)
+            .then((response) => {
+                data = response.data;
+            })
+            .catch((err) => {
+                console.error(`Error loading gameplay data: ${err}`);
+            });
+
+        return data;
     },
 };
