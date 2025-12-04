@@ -23,9 +23,23 @@ export default {
 
         return responseCharacter;
     },
-    async delete(name) {
+    async update(character) {
         await apiClient
-            .delete(`${API_ROOT}/${name}`)
+            .put(API_ROOT, character)
+            .then((response) => {
+                console.log(
+                    `Successfully updated character: ${JSON.stringify(
+                        response.data
+                    )}`
+                );
+            })
+            .catch((err) => {
+                console.error(`Error updating character: ${err}`);
+            });
+    },
+    async delete(id) {
+        await apiClient
+            .delete(`${API_ROOT}/${id}`)
             .then(() => {
                 console.log("Successfully deleted character.");
             })
@@ -44,7 +58,7 @@ export default {
             .catch((err) => {
                 console.error(`Error finding all characters: ${err}`);
             });
-        
+
         return characters;
     },
 };

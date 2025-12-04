@@ -9,7 +9,9 @@ import colors from "vuetify/util/colors";
 const customTheme = {
     dark: true,
     colors: {
-        primary: colors.orange.darken1,
+        button_primary: colors.deepOrange.darken4,
+        button_secondary: colors.grey.darken1,
+        button_tertiary: colors.deepOrange.darken2,
     },
 };
 

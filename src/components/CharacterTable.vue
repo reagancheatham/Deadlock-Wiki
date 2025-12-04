@@ -1,6 +1,7 @@
 <script setup>
-import characterServices from "@/services/characterServices";
 import { ref } from "vue";
+import characterServices from "@/services/characterServices";
+import CharacterEditor from "./CharacterEditor.vue";
 
 const headers = [
     {
@@ -13,28 +14,48 @@ const headers = [
         key: "actions",
     },
 ];
-
 const characters = ref([]);
+const editedCharacter = ref(null);
 const isInputDisabled = ref(false);
+const isDialogVisible = ref(false);
 
 characterServices.findAll().then((databaseCharacters) => {
     characters.value = databaseCharacters;
 });
 
-function edit(name) {
-    console.log(`Edit character: ${name}.`);
+function edit(character) {
+    editedCharacter.value = { ...character };
+    isDialogVisible.value = true;
 }
 
-async function remove(name) {
+async function remove(character) {
     if (isInputDisabled.value) return;
 
     isInputDisabled.value = true;
-    await characterServices.delete(name).then(() => {
+
+    await characterServices.delete(character.id).then(() => {
         isInputDisabled.value = false;
 
-        let index = characters.value.findIndex((c) => c.name == name);
+        let index = characters.value.findIndex((c) => c.id == character.id);
         characters.value.splice(index, 1);
     });
+}
+
+async function save(characterData) {
+    isInputDisabled.value = true;
+
+    await characterServices.update(characterData).then(() => {
+        isInputDisabled.value = false;
+
+        let index = characters.value.findIndex((c) => c.id == characterData.id);
+        characters.value[index] = characterData;
+
+        closeDialog();
+    });
+}
+
+function closeDialog() {
+    isDialogVisible.value = false;
 }
 </script>
 
@@ -55,7 +76,7 @@ async function remove(name) {
                             icon="mdi-pencil"
                             size="small"
                             :disabled="isInputDisabled"
-                            @click="edit(item.name)"
+                            @click="edit(item)"
                         ></v-icon>
                     </template>
                 </v-tooltip>
@@ -75,6 +96,14 @@ async function remove(name) {
             </div>
         </template>
     </v-data-table>
+    <v-dialog v-model="isDialogVisible">
+        <CharacterEditor
+            :character="editedCharacter"
+            :input-disabled="isInputDisabled"
+            @save="save"
+            @cancel="closeDialog"
+        />
+    </v-dialog>
 </template>
 
 <style></style>

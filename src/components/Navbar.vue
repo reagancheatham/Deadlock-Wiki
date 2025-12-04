@@ -6,12 +6,12 @@
                 title="Characters"
                 value="characters"
             ></v-list-item>
-                        <v-list-item
+            <v-list-item
                 prepend-icon="mdi-sword"
                 title="Weapons"
                 value="weapons"
             ></v-list-item>
-                        <v-list-item
+            <v-list-item
                 prepend-icon="mdi-clipboard-text-clock-outline"
                 title="Update History"
                 value="updateHistory"
