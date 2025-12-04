@@ -1,14 +1,14 @@
 <script setup>
 import { ref } from "vue";
 import characterServices from "@/services/character.services.js";
-import { VDateInput } from "vuetify/lib/labs/components.js";
 
-const props = defineProps(["history", "inputDisabled"]);
+const props = defineProps(["quote", "inputDisabled"]);
 const emits = defineEmits(["save", "cancel"]);
 
 const isFormValid = ref(false);
 const characters = ref([]);
 const selectedCharacter = ref({});
+const guestCharacter = ref({});
 
 const requiredRules = [
     (value) => {
@@ -30,14 +30,19 @@ characterServices.findAll().then((databaseCharacters) => {
     characters.value = databaseCharacters;
 
     selectedCharacter.value = characters.value.find(
-        (c) => c.id == props.history.characterID
+        (c) => c.id == props.quote.characterID
+    );
+
+    guestCharacter.value = characters.value.find(
+        (c) => c.id == props.quote.guestCharacterID
     );
 });
 
 function save() {
-    props.history.characterID = selectedCharacter.value?.id;
+    props.quote.characterID = selectedCharacter.value?.id;
+    props.quote.guestCharacterID = guestCharacter.value?.id;
 
-    emits("save", props.history, selectedCharacter.value);
+    emits("save", props.quote, selectedCharacter.value, guestCharacter.value);
 }
 
 function cancel() {
@@ -52,11 +57,6 @@ function cancel() {
             <v-form v-model="isFormValid">
                 <v-row class="ml-4 mr-4">
                     <v-col>
-                        <v-date-input
-                            label="Date"
-                            v-model="history.date"
-                            :rules="requiredRules">
-                        </v-date-input>
                         <v-select
                             label="Character"
                             v-model="selectedCharacter"
@@ -66,11 +66,25 @@ function cancel() {
                             :rules="characterRules"
                         >
                         </v-select>
-                        <v-textarea
-                            rows="12"
-                            label="Changes"
-                            v-model="history.changes">
-                        </v-textarea>
+                        <v-select
+                            label="Guest Character"
+                            v-model="guestCharacter"
+                            :items="characters"
+                            item-title="name"
+                            return-object
+                            :rules="characterRules"
+                        >
+                        </v-select>
+                        <v-text-field label="Context" v-model="quote.context">
+                        </v-text-field>
+                        <v-text-field
+                            label="Transcript"
+                            v-model="quote.transcript"
+                            :rules="requiredRules"
+                        >
+                        </v-text-field>
+                        <v-text-field label="Item" v-model="quote.item">
+                        </v-text-field>
                         <v-row class="button-row mb-3 mr-1" justify="end">
                             <v-btn
                                 class="mr-4"

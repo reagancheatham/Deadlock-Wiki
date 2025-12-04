@@ -1,6 +1,6 @@
 <script setup>
 import router from "@/routing/router.js";
-import routes from "@/routing/Routes.js";
+import routes from "@/routing/routes.js";
 
 function navigate(name) {
     router.push(name);
@@ -25,6 +25,18 @@ function navigate(name) {
                 title="Update History"
                 @click="navigate(routes.UpdateHistory)"
             ></v-list-item>
+            <v-list-item
+                prepend-icon="mdi-format-quote-close-outline"
+                title="Quotes"
+                @click="navigate(routes.Quotes)"
+            >
+            </v-list-item>
+            <v-list-item
+                prepend-icon="mdi-lightbulb-question"
+                title="Trivia"
+                @click="navigate(routes.Trivia)"
+            >
+            </v-list-item>
         </v-list>
     </v-navigation-drawer>
 </template>

@@ -64,6 +64,7 @@ function cancel() {
                             :rules="requiredRules"
                         ></v-text-field>
                         <v-select
+                            label="Character"
                             v-model="selectedCharacter"
                             :items="characters"
                             item-title="name"

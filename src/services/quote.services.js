@@ -1,6 +1,6 @@
 import apiClient from "./services.js";
 
-const API_ROOT = "quote";
+const API_ROOT = "quotes";
 
 export default {
     async create(quote) {
