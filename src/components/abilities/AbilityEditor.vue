@@ -18,9 +18,9 @@ const requiredRules = [
 
 const minRules = [
     (value) => {
-        if (value && value >= 0) return true;
+        if (value != null && value >= 0) return true;
 
-        return "Must be greater than 0.";
+        return "Must be greater than or equal to 0.";
     },
 ];
 
