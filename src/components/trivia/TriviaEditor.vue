@@ -66,7 +66,7 @@ function cancel() {
                             :rules="requiredRules"
                         >
                         </v-textarea>
-                        <v-row class="mt-1 mb-1 mr-1" justify="end">
+                        <v-row class="mt-1 mb-4 mr-1" justify="end">
                             <v-btn
                                 class="mr-4"
                                 color="button_primary"
