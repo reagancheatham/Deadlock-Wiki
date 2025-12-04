@@ -1,10 +1,6 @@
 import axios from "axios";
 
-let baseURL = "";
-
-if (import.meta.env.MODE === "development")
-    baseURL = "http://localhost/deadlock-wiki/";
-else baseURL = "/deadlock-wiki/";
+let baseURL = "http://localhost/deadlock-wiki/";
 
 const apiClient = axios.create({
     baseURL,
