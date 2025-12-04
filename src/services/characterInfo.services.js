@@ -1,6 +1,6 @@
 import apiClient from "./services.js";
 
-const API_ROOT = "characterInfos";
+const API_ROOT = "characters/info";
 
 export default {
     async create(info) {

@@ -1,7 +1,7 @@
 <script setup>
 import Toolbar from "./components/Toolbar.vue";
 import Navbar from "./components/Navbar.vue";
-import CharacterTable from "./components/CharacterTable.vue";
+import CharacterTable from "./components/characters/CharacterTable.vue";
 </script>
 
 <style>

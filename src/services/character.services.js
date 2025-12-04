@@ -24,6 +24,8 @@ export default {
         return responseCharacter;
     },
     async update(character) {
+        let databaseCharacter = null;
+
         await apiClient
             .put(API_ROOT, character)
             .then((response) => {
@@ -32,10 +34,14 @@ export default {
                         response.data
                     )}`
                 );
+
+                databaseCharacter = response.data;
             })
             .catch((err) => {
                 console.error(`Error updating character: ${err}`);
             });
+        
+        return databaseCharacter;
     },
     async delete(id) {
         await apiClient

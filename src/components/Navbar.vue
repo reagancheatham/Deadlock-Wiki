@@ -8,7 +8,7 @@ function navigate(name) {
 </script>
 
 <template>
-    <v-navigation-drawer expand-on-hover permanent rail>
+    <v-navigation-drawer permanent>
         <v-list>
             <v-list-item
                 prepend-icon="mdi-account"
