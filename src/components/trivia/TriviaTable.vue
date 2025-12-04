@@ -1,8 +1,8 @@
 <script setup>
 import { ref } from "vue";
-import quoteServices from "@/services/quote.services.js";
+import triviaServices from "@/services/trivia.services.js";
 import characterServices from "@/services/character.services.js";
-import QuotesEditor from "./QuotesEditor.vue";
+import TriviaEditor from "./TriviaEditor.vue";
 
 const headers = [
     {
@@ -10,57 +10,47 @@ const headers = [
         key: "characterName",
     },
     {
-        title: "Guest Character",
-        key: "guestCharacterName",
-    },
-    {
-        title: "Quote",
-        key: "quote.transcript",
+        title: "Trivia",
+        key: "trivia.text",
     },
     {
         title: "Actions",
         key: "actions",
     },
 ];
-const quotes = ref([]);
+const trivias = ref([]);
 const listItems = ref([]);
-const editedQuote = ref(null);
+const editedTrivia = ref(null);
 const isInputDisabled = ref(false);
 const isDialogVisible = ref(false);
 
-loadQuotes();
+loadTrivia();
 
-async function loadQuotes() {
-    await quoteServices.findAll().then((databaseQuotes) => {
-        quotes.value = databaseQuotes;
+async function loadTrivia() {
+    await triviaServices.findAll().then((databaseQuotes) => {
+        trivias.value = databaseQuotes;
     });
 
-    quotes.value.forEach((quote) => listItems.value.push({ quote }));
+    trivias.value.forEach((trivia) => listItems.value.push({ trivia }));
 
     await characterServices.findAll().then((characters) => {
         listItems.value.forEach((i) => {
             const character = characters.find(
-                (c) => c.id == i.quote.characterID
+                (c) => c.id == i.trivia.characterID
             );
 
             if (character) i.characterName = character.name;
-
-            const guestCharacter = characters.find(
-                (c) => c.id == i.quote.guestCharacterID
-            );
-
-            if (guestCharacter) i.guestCharacterName = guestCharacter.name;
         });
     });
 }
 
 function create() {
-    editedQuote.value = {};
+    editedTrivia.value = {};
     isDialogVisible.value = true;
 }
 
 function edit(item) {
-    editedQuote.value = { ...item.quote };
+    editedTrivia.value = { ...item.trivia };
     isDialogVisible.value = true;
 }
 
@@ -69,34 +59,35 @@ async function remove(item) {
 
     isInputDisabled.value = true;
 
-    await quoteServices.delete(item.quote.id).then(() => {
+    await triviaServices.delete(item.trivia.id).then(() => {
         isInputDisabled.value = false;
 
-        let quoteIndex = quotes.value.findIndex((h) => h.id == item.quote.id);
-        quotes.value.splice(quoteIndex, 1);
+        let triviaIndex = trivias.value.findIndex(
+            (t) => t.id == item.trivia.id
+        );
+        trivias.value.splice(triviaIndex, 1);
 
         let itemIndex = listItems.value.findIndex(
-            (i) => i.quote.id == item.quote.id
+            (i) => i.trivia.id == item.trivia.id
         );
         listItems.value.splice(itemIndex, 1);
     });
 }
 
-async function save(quoteData, characterData, guestCharacterData) {
+async function save(triviaData, characterData) {
     isInputDisabled.value = true;
 
-    await quoteServices.update(quoteData).then((response) => {
-        quoteData = response;
-        let index = quotes.value.findIndex((q) => q.id == quoteData.id);
-        quotes.value[index] = quoteData;
+    await triviaServices.update(triviaData).then((response) => {
+        triviaData = response;
+        let index = trivias.value.findIndex((t) => t.id == triviaData.id);
+        trivias.value[index] = triviaData;
 
         let itemIndex = listItems.value.findIndex(
-            (i) => i.quote.id == quoteData.id
+            (i) => i.trivia.id == triviaData.id
         );
         const listItem = {
-            quote: quoteData,
+            trivia: triviaData,
             characterName: characterData.name,
-            guestCharacterName: guestCharacterData.name,
         };
 
         if (itemIndex == -1) listItems.value.push(listItem);
@@ -118,7 +109,7 @@ function closeDialog() {
             <v-label
                 style="font-size: 24px"
                 class="text-high-emphasis"
-                text="Quotes"
+                text="Trivia"
             ></v-label>
         </v-col>
         <v-btn
@@ -175,8 +166,8 @@ function closeDialog() {
         </v-col>
     </v-row>
     <v-dialog v-model="isDialogVisible">
-        <QuotesEditor
-            :quote="editedQuote"
+        <TriviaEditor
+            :trivia="editedTrivia"
             :input-disabled="isInputDisabled"
             @save="save"
             @cancel="closeDialog"

@@ -34,12 +34,12 @@ async function loadHistory() {
     updateHistories.value.forEach((history) => listItems.value.push({ history: history }));
 
     await characterServices.findAll().then((characters) => {
-        characters.forEach((c) => {
-            const item = listItems.value.find(
-                (i) => i.history.characterID == c.id
+        listItems.value.forEach((i) => {
+            const character = characters.find(
+                (c) => c.id == i.history.characterID
             );
 
-            if (item) item.characterName = c.name;
+            if (character) i.characterName = character.name;
         });
     });
 }
