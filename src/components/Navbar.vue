@@ -37,13 +37,6 @@ function navigate(name) {
                 @click="navigate(routes.Trivia)"
             >
             </v-list-item>
-            <v-list-item
-                prepend-icon="mdi-wheelchair-accessibility"
-                title="Stupid Clanker"
-                @click="navigate(routes.Clanker)"
-            >
-
-            </v-list-item>
         </v-list>
     </v-navigation-drawer>
 </template>
