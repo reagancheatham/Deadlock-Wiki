@@ -82,7 +82,14 @@ async function save(weaponData, weaponStats, characterData) {
         weaponData = response;
         let index = weapons.value.findIndex((w) => w.id == weaponData.id);
         weapons.value[index] = weaponData;
-        listItems.value.push({ weapon: weaponData, characterName: characterData.name });
+
+        let itemIndex = listItems.value.findIndex((i) => i.weapon.id == weaponData.id);
+        const listItem = { weapon: weaponData, characterName: characterData.name };
+        
+        if (itemIndex == -1)
+            listItems.value.push(listItem);
+        else
+            listItems.value[itemIndex] = listItem;
     });
 
     weaponStats.weaponID = weaponData.id;
