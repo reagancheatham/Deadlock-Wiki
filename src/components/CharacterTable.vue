@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import characterServices from "@/services/characterServices";
 import CharacterEditor from "./CharacterEditor.vue";
+import characterInfoServices from "@/services/characterInfoServices.js";
 
 const headers = [
     {
@@ -41,15 +42,16 @@ async function remove(character) {
     });
 }
 
-async function save(characterData) {
+async function save(characterData, characterInfo) {
     isInputDisabled.value = true;
 
     await characterServices.update(characterData).then(() => {
-        isInputDisabled.value = false;
-
         let index = characters.value.findIndex((c) => c.id == characterData.id);
         characters.value[index] = characterData;
+    });
 
+    await characterInfoServices.update(characterInfo).then(() => {
+        isInputDisabled.value = false;
         closeDialog();
     });
 }
