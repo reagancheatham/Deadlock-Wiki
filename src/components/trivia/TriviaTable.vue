@@ -125,7 +125,6 @@ function closeDialog() {
             <v-data-table
                 :headers="headers"
                 :items="listItems"
-                hide-default-footer
             >
                 <template v-slot:item.actions="{ item }">
                     <div class="d-flex ga-2">
