@@ -16,38 +16,33 @@ const requiredRules = [
     },
 ];
 
-abilityStatsServices.findByAbilityID(props.ability.id).then((stats) => {
-    abilityStats = stats;
-});
+const minRules = [
+    (value) => {
+        if (value && value >= 0) return true;
 
+        return "Must be greater than 0.";
+    },
+];
+
+if (props.ability.id) {
+    abilityStatsServices.findByAbilityID(props.ability.id).then((stats) => {
+        abilityStats.value = stats;
+    });
+}
 
 function save() {
-    emits("save", props.ability);
+    emits("save", props.ability, abilityStats.value);
 }
 
 function cancel() {
     emits("cancel");
-}
-
-function saveAbility(abilityData, statsData) {
-    let index = abilities.value.findIndex(abilityData.id);
-    const newValue = { ability: abilityData, stats: statsData };
-    
-    if (index != -1)
-        abilities.value[index] = newValue;
-    else
-        abilities.value.push(newValue);
-}
-
-function cancelAbility() {
-    isDialogVisible.value = false;
 }
 </script>
 
 <template>
     <v-container width="100%">
         <v-card class="editor-card">
-            <v-card-title>Edit Ability</v-card-title>
+            <v-card-title>Edit Ability {{ ability.slot }}</v-card-title>
             <v-form v-model="isFormValid">
                 <v-row class="ml-4 mr-4">
                     <v-col>
@@ -56,9 +51,36 @@ function cancelAbility() {
                             v-model="ability.name"
                             :rules="requiredRules"
                         ></v-text-field>
-                    </v-col>
-                    <v-col>
-                        <v-row class="button-row mb-3 mr-1" justify="end">
+                        <v-text-field
+                            label="Description"
+                            v-model="ability.description"
+                        >
+                        </v-text-field>
+                        <v-text-field
+                            label="Range"
+                            v-model="abilityStats.range"
+                            :rules="minRules"
+                            suffix="m"
+                        >
+                        </v-text-field>
+                        <v-text-field
+                            label="Duration"
+                            v-model="abilityStats.duration"
+                            :rules="minRules"
+                            suffix="s"
+                        >
+                        </v-text-field>
+                        <v-text-field
+                            label="Cooldown"
+                            v-model="abilityStats.cooldown"
+                            :rules="minRules"
+                            suffix="s"
+                        >
+                        </v-text-field>
+                        <v-row
+                            class="ability-button-row mt-1 mb-4 mr-1"
+                            justify="end"
+                        >
                             <v-btn
                                 class="mr-4"
                                 color="button_primary"
@@ -83,9 +105,5 @@ function cancelAbility() {
 <style>
 .editor-card {
     padding: 16px;
-}
-
-.button-row {
-    margin-top: 128px !important;
 }
 </style>

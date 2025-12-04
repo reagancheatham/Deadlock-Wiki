@@ -12,6 +12,7 @@ const emits = defineEmits(["save", "cancel"]);
 const characterInfo = ref({});
 const vitalityStats = ref({});
 const abilities = ref([]);
+const editedAbility = ref({});
 const isFormValid = ref(false);
 const isDialogVisible = ref(false);
 
@@ -24,29 +25,49 @@ const requiredRules = [
 ];
 
 characterInfoServices.find(props.character.id).then((info) => {
-    console.log(`Found character info: ${JSON.stringify(info)}.`);
     characterInfo.value = info;
 });
 
 vitalityStatsServices.find(props.character.id).then((stats) => {
-    console.log(`Found vitality stats: ${JSON.stringify(stats)}.`);
     vitalityStats.value = stats;
 });
 
+abilityServices
+    .findAllForCharacter(props.character.id)
+    .then((databaseAbilities) => {
+        databaseAbilities.forEach((ability) => {
+            abilities.value[ability.slot - 1] = { ability };
+        });
+    });
+
 function save() {
-    emits("save", props.character, characterInfo.value, vitalityStats.value);
+    emits(
+        "save",
+        props.character,
+        characterInfo.value,
+        vitalityStats.value,
+        abilities.value
+    );
 }
 
 function cancel() {
     emits("cancel");
 }
 
+function selectAbility(slot) {
+    if (abilities.value.length >= slot && abilities.value[slot - 1])
+        editedAbility.value = { ...abilities.value[slot - 1].ability };
+    else editedAbility.value = { slot };
+
+    isDialogVisible.value = true;
+}
+
 function saveAbility(abilityData, statsData) {
-    let index = abilities.value.findIndex(abilityData.id);
     const newValue = { ability: abilityData, stats: statsData };
 
-    if (index != -1) abilities.value[index] = newValue;
-    else abilities.value.push(newValue);
+    abilities.value[abilityData.slot - 1] = newValue;
+
+    isDialogVisible.value = false;
 }
 
 function cancelAbility() {
@@ -126,16 +147,28 @@ function cancelAbility() {
                         >
                         </v-text-field>
                         <v-row class="mt-1 justify-center" style="gap: 30px">
-                            <v-btn size="50px" color="button_secondary"
+                            <v-btn
+                                size="50px"
+                                color="button_secondary"
+                                @click="selectAbility(1)"
                                 >1</v-btn
                             >
-                            <v-btn size="50px" color="button_secondary"
+                            <v-btn
+                                size="50px"
+                                color="button_secondary"
+                                @click="selectAbility(2)"
                                 >2</v-btn
                             >
-                            <v-btn size="50px" color="button_secondary"
+                            <v-btn
+                                size="50px"
+                                color="button_secondary"
+                                @click="selectAbility(3)"
                                 >3</v-btn
                             >
-                            <v-btn size="50px" color="button_secondary"
+                            <v-btn
+                                size="50px"
+                                color="button_secondary"
+                                @click="selectAbility(4)"
                                 >4</v-btn
                             >
                         </v-row>
@@ -163,7 +196,11 @@ function cancelAbility() {
         </v-card>
     </v-container>
     <v-dialog v-model="isDialogVisible">
-        <AbilityEditor />
+        <AbilityEditor
+            :ability="editedAbility"
+            @save="saveAbility"
+            @cancel="cancelAbility"
+        />
     </v-dialog>
 </template>
 

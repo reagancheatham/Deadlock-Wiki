@@ -4,6 +4,8 @@ import characterServices from "@/services/character.services";
 import CharacterEditor from "./CharacterEditor.vue";
 import characterInfoServices from "@/services/characterInfo.services.js";
 import vitalityStatsServices from "@/services/vitalityStats.services.js";
+import abilityServices from "@/services/ability.services.js";
+import abilityStatsServices from "@/services/abilityStats.services.js";
 
 const headers = [
     {
@@ -47,7 +49,7 @@ async function remove(character) {
     });
 }
 
-async function save(characterData, characterInfo, vitalityStats) {
+async function save(characterData, characterInfo, vitalityStats, abilities) {
     isInputDisabled.value = true;
 
     await characterServices.update(characterData).then((response) => {
@@ -64,6 +66,25 @@ async function save(characterData, characterInfo, vitalityStats) {
 
     vitalityStats.characterID = characterData.id;
     await vitalityStatsServices.update(vitalityStats);
+
+    abilities.forEach(async (abilityData) => {
+        if (abilityData == null) return;
+
+        console.log("ability data: " + JSON.stringify(abilityData));
+
+        abilityData.ability.characterID = characterData.id;
+        await abilityServices
+            .update(abilityData.ability)
+            .then((databaseAbility) => {
+                abilityData.ability = databaseAbility;
+            });
+
+        if (abilityData.stats == null)
+            abilityData.stats = {};
+
+        abilityData.stats.abilityID = abilityData.ability.id;
+        await abilityStatsServices.update(abilityData.stats);
+    });
 
     isInputDisabled.value = false;
     closeDialog();

@@ -52,7 +52,7 @@ export default {
             });
     },
     async findByAbilityID(abilityID) {
-        let stats = [];
+        let stats = null;
 
         await apiClient
             .get(`${API_ROOT}/ability/${abilityID}`)
@@ -61,20 +61,6 @@ export default {
             })
             .catch((err) => {
                 console.error(`Error finding all ability stats: ${err}`);
-            });
-
-        return stats;
-    },
-    async find(id) {
-        let stats = null;
-
-        await apiClient
-            .get(`${API_ROOT}/${id}`)
-            .then((response) => {
-                stats = response;
-            })
-            .catch((err) => {
-                console.error(`Error finding ability stats: ${err}`);
             });
 
         return stats;
