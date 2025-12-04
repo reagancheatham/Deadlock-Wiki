@@ -5,6 +5,7 @@ import UpdateHistoryPage from "@/pages/UpdateHistoryPage.vue";
 import routes from "./routes.js";
 import QuotesPage from "@/pages/QuotesPage.vue";
 import TriviaPage from "@/pages/TriviaPage.vue";
+import AIPage from "@/pages/AIPage.vue";
 
 const router = createRouter({
     //removes the # from the url
@@ -35,6 +36,10 @@ const router = createRouter({
             path: routes.Trivia,
             component: TriviaPage,
         },
+        {
+            path: routes.Clanker,
+            component: AIPage,
+        }
     ],
 });
 
