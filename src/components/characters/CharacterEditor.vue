@@ -24,9 +24,15 @@ const requiredRules = [
 ];
 
 characterServices.getGameplayData(props.character.id).then((response) => {
-    characterInfo.value = response.CharacterInfo;
-    vitalityStats.value = response.VitalityStat;
+    console.log("info: " + JSON.stringify(response));
+
+    if (response.CharacterInfo) characterInfo.value = response.CharacterInfo;
+
+    if (response.VitalityStat) vitalityStats.value = response.VitalityStat;
 });
+
+if (characterInfo.value == null) characterInfo.value = {};
+if (vitalityStats.value == null) vitalityStats.value = {};
 
 abilityServices
     .findAllForCharacter(props.character.id)
